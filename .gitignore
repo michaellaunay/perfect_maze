@@ -1,0 +1,16 @@
+*.egg-info
+*.pyc
+*.swo
+*.swp
+*~
+.installed.cfg
+.mr.developer.cfg
+__pycache__
+bin/
+cache/
+develop-eggs/
+eggs/
+node_modules/
+parts/
+tmp/
+var/
