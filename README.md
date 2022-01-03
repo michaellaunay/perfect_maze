@@ -5,7 +5,7 @@ Create maze wich can be print in utf-8.
 Example :
 
 ```python:
-    >>> from src.perfect_maze import *
+    >>> from maze.perfect_maze import *
     >>> m = build_maze(60,40)
     >>> print(printable_maze(m))
 ┌─┬─────────┬─┬─┬─┬───┬─────┬───────────┬───┬─┬─────┬─────┬───┬─┬─────┬─────────┬─────────────┬─┬───┬───────┬─────┬─┬───┐
