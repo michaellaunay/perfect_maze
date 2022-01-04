@@ -14,12 +14,12 @@ from typing import List, Type
 
 class Wall:
     """
-        Separation wall.
+        Border wall.
     """
 
     def __init__(self, first_cell:Type["Cell"], second_cell:Type["Cell"], is_build:bool=True):
         """
-        The maze is made of cells, wall are a hard border beetween two cells.
+        The maze is made of cells, wall is a hard border beetween two cells.
         """
         self.first_cell = first_cell
         self.second_cell = second_cell
