@@ -4,7 +4,7 @@
 # mail : michaellaunay@ecreall.com
 # creation_date : 2015
 # update_date : 2021
-# Description : Create a maze and print it on
+# Description : Create a maze and print it on stdout.
 # Usage :
 #      m = build_maze(60,40)
 #      print(printable_maze(m))
@@ -153,11 +153,11 @@ def build_maze(width:int, length:int) -> Maze:
     #now create the perfect maze
     erased_walls = 0
     nb_cells = width*length
-    groups = {k:[k] for k in range(0, width*length)} # We group connected cells
-    # at the end we must have only one group, at this moment it will exist a 
-    # path between each cells.
-    # At first we build a gride made of cells with 4 walls.
-    # Then we will randomize erasement of wall
+    groups = {k:[k] for k in range(0, width*length)} # We group together 
+    # connected cells at the end we must have only one group, and at this
+    # time there will be a path between each cell.
+    # At the begenning, we build a gride made up of 4-walled cells.
+    # Next we randomize the erasing of the walls and connect cells.
     while erased_walls < nb_cells -1:
         x = random.randrange(0, width)
         y = random.randrange(0, length)
