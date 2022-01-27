@@ -3,21 +3,59 @@
 # author: Michael Launay
 # mail : michaellaunay@ecreall.com
 # creation_date : 2015
-# update_date : 2021
-# Description : Create a maze and print it on stdout.
+# update_date : 2021, 2022
+# Description : Creates a two dimension perfect maze, and provides function to
+#      printed it on stdout. Can be used as a stand alone python scrypt.
 # Usage :
 #      m = build_maze(60,40)
 #      print(printable_maze(m))
+VERSION = "0.1.2"
+SCRIPT_USAGE = """Usage: perfect_maze.py [OPTIONS]
 
+    Buid a perfect maze and print it on stout.
+
+Options:
+    --help          This usage.
+    --version       Version.
+    --quite         Do not print maze on stdout.
+    --width=int     The number of vertical cells.
+    --length=int    The number of horizontal cells.
+    --fout=path     File path to store the printable maze and the random serie
+                    used to create it.
+"""
+
+import itertools
 import random
-from typing import List, Type
+from typing import List, Tuple, Type, Callable, IO
+from enum import Enum
+
+DEFAULT_WIDTH = 6
+DEFAULT_LENGTH = 4
+DEFAULT_SPY_FILE_OUT = None
+DEFAULT_PRINT_MAZE = True
+
+class DIRECTIONS(Enum):
+    """ The possible mouvement directions.
+    It determines the number of cells for a wall.
+    """
+    NORTH:int = 0
+    EAST:int = 1
+    SOUTH:int = 2
+    WEST:int = 3
+NORTH=DIRECTIONS.NORTH.value
+EAST=DIRECTIONS.EAST.value
+SOUTH=DIRECTIONS.SOUTH.value
+WEST=DIRECTIONS.WEST.value
 
 class Wall:
     """
         Border wall.
     """
 
-    def __init__(self, first_cell:Type["Cell"], second_cell:Type["Cell"], is_build:bool=True):
+    def __init__(self,
+        first_cell:Type["Cell"],
+        second_cell:Type["Cell"],
+        is_build:bool=True):
         """
         The maze is made of cells, wall is a hard border beetween two cells.
         """
@@ -120,18 +158,40 @@ class Maze:
     """
         A maze consists of cells and walls.
     """
-    def __init__(self, cells:List[List[Cell]], width:int, length:int):
+    def __init__(self,
+        cells:List[List[Cell]],
+        width:int,
+        length:int,
+        open_walls:Tuple[Tuple[int, int, int]]= None):
+        """ Initialize a maze with the list of cells
+        """
         self.cells = cells
         self.width = width
         self.length = length
+        self.open_walls = open_walls
+    def update_open_walls(new_wall:Tuple[int,int,int] = None):
+        """walk the maze cells and update the open wall list or just update the
+        given cell by new_wall.
+        """
+        raise NotImplementedError("For future version !")
 
-
-def build_maze(width:int, length:int) -> Maze:
-    """
-        Build a maze.
+def build_maze(width:int,
+        length:int,
+        randrange:Callable[[int,int],int] = random.randrange,
+        open_walls:Tuple[Tuple[int, int, int]] = None) -> Maze:
+    """Create a maze and return the maze and the list of open wall coordinates
+        (cell coordinate and wall direction).
+    randrange is provided during test or for building a maze from open walls.
+    open_walls is provided for build a maze from existing open wall list, use
+        to replace randrange.
     """
     cells = [[Cell(x+y*width) for x in range(0, width)] for y in range(0, length)]
-
+    if open_walls:
+        chain = itertools.chain(*open_walls) #open walls are used for monkey patching of random list
+        def monky_randrange(*l,**d):
+            return next(chain)
+        randrange = monky_randrange
+    new_open_walls = []
     for y, row in enumerate(cells):
         for x, cell in enumerate(row):
             north_cell = None
@@ -159,24 +219,26 @@ def build_maze(width:int, length:int) -> Maze:
     # At the begenning, we build a gride made up of 4-walled cells.
     # Next we randomize the erasing of the walls and connect cells.
     while erased_walls < nb_cells -1:
-        x = random.randrange(0, width)
-        y = random.randrange(0, length)
-        direction = random.randrange(0, 4)
+        x = randrange(0, width)
+        y = randrange(0, length)
+        direction = randrange(0, len(DIRECTIONS)) #For future we will manage more than 4 directions
         cell = cells[y][x]
         wall = None
         other_cell = None
-        if direction == 0:
+        if direction == NORTH:
             wall = cell.north_wall
             other_cell = cell.north_cell
-        elif direction == 1:
+        elif direction == EAST:
             wall = cell.east_wall
             other_cell = cell.east_cell
-        elif direction == 3:
+        elif direction == SOUTH:
             wall = cell.south_wall
             other_cell = cell.south_cell
-        else:
+        elif direction == WEST:
             wall = cell.west_wall
             other_cell = cell.west_cell
+        else:
+            raise NameError("Unknown direction.")
         #other_cell is none if cell is at the maze border
         if other_cell and other_cell.n not in groups[cell.n]:
             wall.is_build = False
@@ -189,8 +251,8 @@ def build_maze(width:int, length:int) -> Maze:
                 groups[cell.n] += groups[other_cell.n]
                 for n in groups[other_cell.n]:
                     groups[n] = groups[cell.n]
-
-    return Maze(cells, width, length)
+            new_open_walls.append((x,y,direction))
+    return Maze(cells, width, length, tuple(new_open_walls))
 
 def printable_maze(maze:Maze) -> str:
     """
@@ -203,21 +265,21 @@ def printable_maze(maze:Maze) -> str:
     for  x, row in enumerate(maze.cells):
         for y, cell in enumerate(row):
             north_cell = cell.north_cell
-            north_wall = cell.north_wall.is_build and 1 or 0
-            north_cell_east_wall = north_cell and north_cell.east_wall.is_build and 1 or 0
-            north_cell_west_wall = north_cell and north_cell.west_wall.is_build and 1 or 0
+            north_wall = 1 if cell.north_wall.is_build else 0
+            north_cell_east_wall = 1 if north_cell and north_cell.east_wall.is_build else 0
+            north_cell_west_wall = 1 if north_cell and north_cell.west_wall.is_build else 0
             east_cell = cell.east_cell
-            east_wall = cell.east_wall.is_build and 1 or 0
-            east_cell_north_wall = east_cell and east_cell.north_wall.is_build and 1 or 0
-            east_cell_south_wall = east_cell and east_cell.south_wall.is_build and 1 or 0
+            east_wall = 1 if cell.east_wall.is_build else 0
+            east_cell_north_wall = 1 if east_cell and east_cell.north_wall.is_build else 0
+            east_cell_south_wall = 1 if east_cell and east_cell.south_wall.is_build else 0
             west_cell = cell.west_cell
-            west_wall = cell.west_wall.is_build and 1 or 0
-            west_cell_north_wall = west_cell and west_cell.north_wall.is_build and 1 or 0
-            west_cell_south_wall = west_cell and west_cell.south_wall.is_build and 1 or 0
+            west_wall = 1 if cell.west_wall.is_build else 0
+            west_cell_north_wall = 1 if west_cell and west_cell.north_wall.is_build else 0
+            west_cell_south_wall = 1 if west_cell and west_cell.south_wall.is_build else 0
             south_cell = cell.south_cell
-            south_wall = cell.south_wall.is_build and 1 or 0
-            south_cell_east_wall = south_cell and south_cell.east_wall.is_build and 1 or 0 
-            south_cell_west_wall = south_cell and south_cell.west_wall.is_build and 1 or 0
+            south_wall = 1 if cell.south_wall.is_build else 0
+            south_cell_east_wall = 1 if south_cell and south_cell.east_wall.is_build else 0
+            south_cell_west_wall = 1 if south_cell and south_cell.west_wall.is_build else 0
 
             north_west_corner = corners[4*west_cell_north_wall + 2*west_wall + 1*north_wall + 8*north_cell_west_wall]
             north_east_corner = corners[8*north_cell_east_wall + 2*east_wall + 4*north_wall + 1*east_cell_north_wall]
@@ -238,7 +300,85 @@ def printable_maze(maze:Maze) -> str:
     draw += last_line
     return "".join(draw)
 
-if __name__ == "__main__":
-    m = build_maze(60,40)
-    print(printable_maze(m))
+def spy_maze_construction(width:int, length:int, fout:IO) -> Maze:
+    """ Build a maze with a spy random function to know random serie,
+    Then write the random and the printable maze in fout.
+    """
+    with open(fout,"w") as fout:
+        fout.write("randrange = [")
+        def spy_random(*args, **kargs):
+           res = random.randrange(*args, **kargs)
+           fout.write(f"{res}, ")
+           return res
 
+        maze = build_maze(width,length, spy_random)
+        fout.write("]")
+        fout.write(f"\nopen_walls={maze.open_walls}")
+        p = printable_maze(maze)
+        print(p)
+        fout.write('\npmaze = """')
+        fout.write(p)
+        fout.write('"""')
+        fout.close()
+    return maze
+
+if __name__ == "__main__":
+    import errno
+    import getopt
+    import sys
+    import datetime
+    def parse():
+        """ Parse arguments
+        """
+        width = DEFAULT_WIDTH
+        length = DEFAULT_LENGTH
+        fout = DEFAULT_SPY_FILE_OUT
+        print_maze = DEFAULT_PRINT_MAZE
+        try:
+            options, arguments = getopt.gnu_getopt(
+                sys.argv[1:], #Arguments
+                'vhqw:l:f:',
+                ["version", "help", "quite", "width=", "length=", "fileout=",])
+        except:
+            print(SCRIPT_USAGE)
+            sys.exit(1)
+        for option, value in options:
+            while option.startswith("-"):
+                option = option[1:] #remove prefix "-" to allow lazy options
+            if option in ("v", "version"):
+                print(VERSION)
+                sys.exit()
+            if option in ("h", "help"):
+                print(SCRIPT_USAGE)
+                sys.exit()
+            if option in ("q", "quite"):
+                print_maze = False
+            if option in ("w","width"):
+                if not value.isdecimal():
+                    print(SCRIPT_USAGE, sys.stderr)
+                    sys.exit(1)
+                width = int(value)
+            elif option in ("l","length"):
+                if not value.isdecimal():
+                    print(SCRIPT_USAGE, sys.stderr)
+                    sys.exit(1)
+                length = int(value)
+            elif option in ("f", "fileout"):
+                fout = value
+                try: #Check permission to write file
+                    with open(fout, "w") as f:
+                        now = datetime.datetime.now()
+                        f.write(f"#file generated by {sys.argv[0]} the {now}")
+                        f.close()
+                except IOError as err:
+                    print("IO acces error", sys.stderr)
+                    exit(1)
+        return width, length, fout, print_maze
+    width, length, fout, print_maze = parse()
+    maze = None
+    if fout:
+        maze = spy_maze_construction(width, length, fout)
+    else:
+        maze = build_maze(width, length)
+    if print_maze:
+        print(printable_maze(maze))
