@@ -5,7 +5,7 @@
 # creation_date : 2015
 # update_date : 2021, 2022
 # Description : Creates a two dimension perfect maze, and provides function to
-#      printed it on stdout. Can be used as a stand alone python scrypt.
+#      print it on stdout. Can be used as a stand alone python scrypt.
 # Usage :
 #      m = build_maze(60,40)
 #      print(printable_maze(m))
@@ -179,11 +179,9 @@ def build_maze(width:int,
         length:int,
         randrange:Callable[[int,int],int] = random.randrange,
         open_walls:Tuple[Tuple[int, int, int]] = None) -> Maze:
-    """Create a maze and return the maze and the list of open wall coordinates
-        (cell coordinate and wall direction).
-    randrange is provided during test or for building a maze from open walls.
-    open_walls is provided for build a maze from existing open wall list, use
-        to replace randrange.
+    """Create an return a width*length perfect maze.
+    randrange is provided for testing.
+    open_walls is provided for building a maze from open wall list.
     """
     cells = [[Cell(x+y*width) for x in range(0, width)] for y in range(0, length)]
     if open_walls:
@@ -305,6 +303,7 @@ def spy_maze_construction(width:int, length:int, fout:IO) -> Maze:
     Then write the random and the printable maze in fout.
     """
     with open(fout,"w") as fout:
+        fout.write(f"width = {width}\nlength = {length}\n")
         fout.write("randrange = [")
         def spy_random(*args, **kargs):
            res = random.randrange(*args, **kargs)
