@@ -9,7 +9,7 @@
 # Usage :
 #      m = build_maze(60,40)
 #      print(printable_maze(m))
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 SCRIPT_USAGE = """Usage: perfect_maze.py [OPTIONS]
 
     Buid a perfect maze and print it on stout.
@@ -48,40 +48,54 @@ SOUTH=DIRECTIONS.SOUTH.value
 WEST=DIRECTIONS.WEST.value
 
 class Wall:
-    """
-        Border wall.
+    """Border wall.
     """
 
     def __init__(self,
         first_cell:Type["Cell"],
         second_cell:Type["Cell"],
         is_build:bool=True):
-        """
-        The maze is made of cells, wall is a hard border beetween two cells.
+        """The maze is made of cells, wall is a hard border beetween two cells.
+
+        Args:
+            first_cell (Cell): first side of the wall.
+            second_cell (Cell): oposite side of the wall
+            is_build (bool, optional): If false, the border between the 2
+                cells is open. Defaults to True.
         """
         self.first_cell = first_cell
         self.second_cell = second_cell
         self.is_build = is_build
 
-    def set_cells(first_cell, second_cell):
+    def set_cells(first_cell:Type["Cell"], second_cell:Type["Cell"]):
+        """Modify the border.
+
+        Args:
+            first_cell (Cell): cell at the first side of the wall.
+            second_cell (Cell): cell at the oposite side of the wall.
         """
-        Modify the border.
-        """
+
         self.first_cell = first_cell
         self.second_cell = second_cell
 
     def __iter__(self):
+        """yield the cells separated by this wall.
+        Yields:
+            Cell: next cell
+        """
         yield self.first_cell
         yield self.second_cell
 
 
 class Cell:
-    """
-       A cell is a square place which can have 4 walls.
+    """A cell is a square place which can have 4 walls.
     """
 
     def __init__(self, n:int=-1):
-        """n is the id number of the cell
+        """Constructor
+
+        Args:
+            n (int, optional): n is the id number of the cell. Defaults to -1.
         """
         self.north_wall = None
         self.east_wall = None
@@ -163,7 +177,16 @@ class Maze:
         width:int,
         length:int,
         open_walls:Tuple[Tuple[int, int, int]]= None):
-        """ Initialize a maze with the list of cells
+        """Initialize a maze with the list of cells
+
+        Args:
+            cells (List[List[Cell]]): A Cells table as a list of cells lines
+            width (int): size of the maze lines
+            length (int): number of cell lines
+            open_walls (Tuple[Tuple[int, int, int]], optional): List of cells
+                described by X and Y coordinates and wall position (DIRECTIONS).
+                If given the maze is built from this list, otherwise it's
+                randomized. Defaults to None.
         """
         self.cells = cells
         self.width = width
@@ -172,18 +195,31 @@ class Maze:
     def update_open_walls(new_wall:Tuple[int,int,int] = None):
         """walk the maze cells and update the open wall list or just update the
         given cell by new_wall.
+
+        Args:
+            new_wall (Tuple[int,int,int]): X,Y of the cell, direction of the wall.
         """
         raise NotImplementedError("For future version !")
 
 def build_maze(width:int,
         length:int,
         randrange:Callable[[int,int],int] = random.randrange,
-        open_walls:Tuple[Tuple[int, int, int]] = None) -> Maze:
+        open_walls:Tuple[Tuple[int, int, int]] = None,
+        cell_type:Type[Cell] = Cell) -> Maze:
     """Create an return a width*length perfect maze.
-    randrange is provided for testing.
-    open_walls is provided for building a maze from open wall list.
+
+    Args:
+        width (int): Maze width
+        randrange (Callable[[int,int],int]): A randrange monky patch provided
+            for testing.
+        open_walls (Tuple[Tuple[int,int,int]]): If provided build the maze from
+            this list of  (X,Y cell, open wall direction)for building a maze 
+            from open wall list.
+        cell_type (Cell base class) is the cell base class used to instantiate
+         cells of the maze.
+         By override cell_type you can provide your class derived from Cell.
     """
-    cells = [[Cell(x+y*width) for x in range(0, width)] for y in range(0, length)]
+    cells = [[cell_type(x+y*width) for x in range(0, width)] for y in range(0, length)]
     if open_walls:
         chain = itertools.chain(*open_walls) #open walls are used for monkey patching of random list
         def monky_randrange(*l,**d):
@@ -253,8 +289,9 @@ def build_maze(width:int,
     return Maze(cells, width, length, tuple(new_open_walls))
 
 def printable_maze(maze:Maze) -> str:
-    """
-        Return an utf-8 string for representing the maze.
+    """ Return an utf-8 string for representing the maze.
+    Args:
+        maze (Maze): The maze to print.
     """
     corners = [' ','╶','╷','┌','╴','─','┐','┬','╵','└','│','├','┘','┴','┤','┼']
     #         [ 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15]
