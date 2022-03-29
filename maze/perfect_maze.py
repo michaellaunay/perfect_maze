@@ -210,12 +210,12 @@ def build_maze(width:int,
 
     Args:
         width (int): Maze width
-        randrange (Callable[[int,int],int]): A randrange monky patch provided
+        randrange (Callable[[int,int],int], optional): A randrange monky patch provided
             for testing.
-        open_walls (Tuple[Tuple[int,int,int]]): If provided build the maze from
+        open_walls (Tuple[Tuple[int,int,int]], optional): If provided build the maze from
             this list of  (X,Y cell, open wall direction)for building a maze 
             from open wall list.
-        cell_type (Cell base class) is the cell base class used to instantiate
+        cell_type (Cell base class, optional) is the cell base class used to instantiate
          cells of the maze.
          By override cell_type you can provide your class derived from Cell.
     """
