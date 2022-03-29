@@ -2,6 +2,15 @@
 A simple python script to create perfect maze (a maze without dead cells and with all connected cells).
 Create maze wich can be printed in utf-8.
 
+Test :
+	Move to "maze" directory and launch : 
+		python3 -m unittest discover
+
+	Or install pytest and pytest-cov :
+
+		python3 -m pytest
+		python3 -m pytest --cov=perfect_maze
+
 Example :
 
 ```python:
