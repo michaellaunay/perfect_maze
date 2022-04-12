@@ -14,7 +14,7 @@ import random
 from typing import List, Tuple, Type, Callable, IO
 from enum import Enum
 
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 SCRIPT_USAGE = """Usage: perfect_maze.py [OPTIONS]
 
     Buid a perfect maze and print it on stout.
@@ -177,8 +177,7 @@ class Cell:
 
 
 class Maze:
-    """
-        A maze consists of cells and walls.
+    """A maze consists of cells and walls.
     """
     def __init__(self,
                  cells: List[List[Cell]],
@@ -222,13 +221,15 @@ def build_maze(width: int,
     Args:
         width (int): Maze width
         randrange (Callable[[int,int],int], optional): A randrange monkey patch
-          provided for testing.
+        provided for testing.
+
         open_walls (Tuple[Tuple[int,int,int]], optional): If provided, build
-          the maze from this list of  (X,Y cell, open wall direction)for
-          building a maze from open wall list.
+        the maze from this list of  (X,Y cell, open wall direction)for building
+        a maze from open wall list.
+        
         cell_type (Cell base class, optional) is the cell base class used to
-          instantiate cells of the maze.
-          By providing cell_type you build maze with your own cells.
+        instantiate cells of the maze. By providing cell_type you build maze
+        with your own cells.
     """
     cells = [[cell_type(x+y*width) for x in range(0, width)]
              for y in range(0, length)]
@@ -306,6 +307,7 @@ def build_maze(width: int,
 
 def printable_maze(maze: Maze) -> str:
     """ Return an utf-8 string for representing the maze.
+
     Args:
         maze (Maze): The maze to print.
     """

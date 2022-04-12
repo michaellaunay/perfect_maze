@@ -1,6 +1,5 @@
 import unittest
-from numpy import append
-import pytest
+from pytest import *
 from perfect_maze import *
 from dataclasses import dataclass
 
@@ -112,9 +111,9 @@ class TestMaze(unittest.TestCase):
             def monky_randrange(*l, **d):
                 return next(gen)
             b_maze = build_maze(e_maze.width, e_maze.length, monky_randrange)
-            self.assertEqual(b_maze.open_walls, e_maze.open_walls)
+            assert b_maze.open_walls == e_maze.open_walls
             b_p_maze = printable_maze(b_maze)
-            self.assertEqual(b_p_maze, e_maze.pmaze)
+            assert b_p_maze == e_maze.pmaze
 
 
 

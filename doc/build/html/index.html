@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to maze’s documentation! &#8212; maze 0.1.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="welcome-to-maze-s-documentation">
+<h1>Welcome to maze’s documentation!<a class="headerlink" href="#welcome-to-maze-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Perfect maze is a simple python script to create perfect maze which is a maze without dead cells and with all connected cells.
+The maze can be printed in utf-8.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>python::</dt><dd><p>from maze.perfect_maze import *
+m = build_maze(60,40)
+print(printable_maze(m))</p>
+</dd>
+</dl>
+</section>
+<section id="module-perfect_maze">
+<span id="module-documentation"></span><h2>Module documentation<a class="headerlink" href="#module-perfect_maze" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="perfect_maze.Cell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">Cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perfect_maze.Cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>A cell is a square place which can have 4 walls.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="perfect_maze.DIRECTIONS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">DIRECTIONS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perfect_maze.DIRECTIONS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The possible mouvement directions.
+It determines the number of cells for a wall.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="perfect_maze.Maze">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">Maze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#perfect_maze.Cell" title="perfect_maze.Cell"><span class="pre">perfect_maze.Cell</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_walls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perfect_maze.Maze" title="Permalink to this definition">¶</a></dt>
+<dd><p>A maze consists of cells and walls.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="perfect_maze.Maze.update_open_walls">
+<span class="sig-name descname"><span class="pre">update_open_walls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#perfect_maze.Maze.update_open_walls" title="Permalink to this definition">¶</a></dt>
+<dd><p>walk the maze cells and update the open wall list or just update the
+given cell by new_wall.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>new_wall (Tuple[int,int,int]): X,Y of the cell, direction of the</dt><dd><p>wall.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="perfect_maze.Wall">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">Wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#perfect_maze.Cell" title="perfect_maze.Cell"><span class="pre">perfect_maze.Cell</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#perfect_maze.Cell" title="perfect_maze.Cell"><span class="pre">perfect_maze.Cell</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_build</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perfect_maze.Wall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Border wall.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="perfect_maze.Wall.set_cells">
+<span class="sig-name descname"><span class="pre">set_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#perfect_maze.Cell" title="perfect_maze.Cell"><span class="pre">perfect_maze.Cell</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#perfect_maze.Cell" title="perfect_maze.Cell"><span class="pre">perfect_maze.Cell</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perfect_maze.Wall.set_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the border.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>first_cell (Cell): cell at the first side of the wall.
+second_cell (Cell): cell at the oposite side of the wall.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="perfect_maze.build_maze">
+<span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">build_maze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">width:</span> <span class="pre">int,</span> <span class="pre">length:</span> <span class="pre">int,</span> <span class="pre">randrange:</span> <span class="pre">typing.Callable[[int,</span> <span class="pre">int],</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;bound</span> <span class="pre">method</span> <span class="pre">Random.randrange</span> <span class="pre">of</span> <span class="pre">&lt;random.Random</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x19d8080&gt;&gt;,</span> <span class="pre">open_walls:</span> <span class="pre">typing.Optional[typing.Tuple[typing.Tuple[int,</span> <span class="pre">int,</span> <span class="pre">int]]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">cell_type:</span> <span class="pre">typing.Type[perfect_maze.Cell]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'perfect_maze.Cell'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#perfect_maze.Maze" title="perfect_maze.Maze"><span class="pre">perfect_maze.Maze</span></a></span></span><a class="headerlink" href="#perfect_maze.build_maze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return a width*length perfect maze.</p>
+<dl>
+<dt>Args:</dt><dd><p>width (int): Maze width
+randrange (Callable[[int,int],int], optional): A randrange monkey patch
+provided for testing.</p>
+<p>open_walls (Tuple[Tuple[int,int,int]], optional): If provided, build
+the maze from this list of  (X,Y cell, open wall direction)for building
+a maze from open wall list.</p>
+<p>cell_type (Cell base class, optional) is the cell base class used to
+instantiate cells of the maze. By providing cell_type you build maze
+with your own cells.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="perfect_maze.printable_maze">
+<span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">printable_maze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maze</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#perfect_maze.Maze" title="perfect_maze.Maze"><span class="pre">perfect_maze.Maze</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#perfect_maze.printable_maze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an utf-8 string for representing the maze.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>maze (Maze): The maze to print.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="perfect_maze.spy_maze_construction">
+<span class="sig-prename descclassname"><span class="pre">perfect_maze.</span></span><span class="sig-name descname"><span class="pre">spy_maze_construction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#perfect_maze.Maze" title="perfect_maze.Maze"><span class="pre">perfect_maze.Maze</span></a></span></span><a class="headerlink" href="#perfect_maze.spy_maze_construction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a maze with a spy random function to know random serie,
+Then write the random and the printable maze in fout.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">maze</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Michaël Launay.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
