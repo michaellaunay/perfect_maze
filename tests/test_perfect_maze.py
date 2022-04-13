@@ -1,6 +1,6 @@
 import unittest
 from pytest import *
-from perfect_maze import *
+from maze.perfect_maze import *
 from dataclasses import dataclass
 
 @dataclass
