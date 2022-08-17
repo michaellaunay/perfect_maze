@@ -2,7 +2,7 @@
 A simple python script to create perfect maze (a maze without dead cells and with all connected cells).
 Create maze wich can be printed in utf-8.
 
-Example :
+## Example
 
 ```python:
     >>> from maze.perfect_maze import *
@@ -51,23 +51,34 @@ Example :
 └───┴─────┴─────┴─┴─────┴───┴─────┴───┴─────────┴─────┴─────────────┴─────────┴─┴─┴───┴───┴─────────┴───┴─┴─┴───┴─┴─────┘
 ```
 
-Develope : 
-	git clone https://github.com/michaellaunay/perfect_maze.git #Clone project
-	cd perfect_maze #Move to project directory
-	pip install pipenv #Install pipenv
-	pipenv install --dev --python=python3.9 #Create virtualenv to code
+## Develop
 
-Tests :
-	Move to "src/maze" directory and launch : 
-		python3 -m unittest discover
+```shell
+git clone https://github.com/michaellaunay/perfect_maze.git #Clone project
+cd perfect_maze #Move to project directory
+pip install pipenv #Install pipenv
+pipenv install --dev --python=python3.9 #Create virtualenv to code
+```
 
-	Or install pytest and pytest-cov :
+## Tests
 
-		python3 -m pytest
-		python3 -m pytest --cov=perfect_maze
+Move to "src/maze" directory and launch :
+	
+```shell
+python3 -m unittest discover
+```
+Or install pytest and pytest-cov :
 
-Versions :
+```shell
+python3 -m pytest
+python3 -m pytest --cov=perfect_maze
+```
+
+## Versions
+
 Version 0.1.4 2022-04-10 : Add Pipfile and sphinx to generate documentation.
+
 Version 0.1.3 2022-03-30 : Pylint and Flake8 corrections.
+
 Version 0.1.2 2022-01-27 : Add open wall list parameter to build_maze function for reload a maze.
 		Add parameter parse function to use it as a stand alone python script.
