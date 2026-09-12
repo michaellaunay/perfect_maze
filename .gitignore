@@ -26,7 +26,8 @@ coverage.xml
 .mypy_cache/
 
 # Documentation
-doc/build/
+site/
+.cache/
 
 # Editors
 *.swo
