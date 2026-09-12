@@ -7,9 +7,13 @@
 The site is written in Markdown under `docs/` and built with
 [Zensical](https://zensical.org/); the API pages are generated from the
 docstrings by [mkdocstrings](https://mkdocstrings.github.io/). The
-`docs/usage.md` and `docs/development.md` pages include sections of the
-project `README.md`, and `docs/changelog.md` includes `CHANGELOG.md`, so
-those two files are the single source of truth.
+documentation exists in two languages: `docs/en/` and `docs/fr/`.
+
+The *Usage* and *Development* pages include sections of `README.md`
+(English) or `README.fr.md` (French), and the *Changelog* pages include
+`CHANGELOG.md`, so these three files are the single source of truth; the
+site pages only assemble them. Any change to one README must be mirrored in
+the other.
 
 ```shell
 zensical serve            # live preview at http://127.0.0.1:8000

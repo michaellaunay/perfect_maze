@@ -1,5 +1,7 @@
 # perfect_maze
 
+*[Version française](README.fr.md)*
+
 <!-- --8<-- [start:intro] -->
 A small, dependency-free Python library and command-line tool that generates
 **perfect mazes** and renders them with UTF-8 box-drawing characters.

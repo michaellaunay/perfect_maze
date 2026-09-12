@@ -1,14 +1,19 @@
 # perfect_maze
 
---8<-- "README.md:intro"
+**English** — A small, dependency-free Python library and command-line tool
+that generates perfect mazes and renders them with UTF-8 box-drawing
+characters. [Read the documentation in English →](en/index.md)
 
-- [Usage](usage.md) — installation, command line and library examples.
-- [Development](development.md) — set-up, tests, linting, documentation.
-- [API reference](api.md) — generated from the docstrings.
-- [Changelog](changelog.md)
+**Français** — Une petite bibliothèque Python sans dépendance, avec un outil
+en ligne de commande, qui génère des labyrinthes parfaits et les affiche avec
+les caractères de tracé de cadres UTF-8. [Lire la documentation en
+français →](fr/index.md)
 
---8<-- "README.md:algorithm"
-
-## License
-
-GNU Affero General Public License v3.0 or later.
+```text
+┌─────┬─┬─┬─────┬───┬───┐
+│ ╷ ╶─┘ │ └─┐ ╷ ╵ ╷ ╵ ┌─┤
+│ ├─┬─╴ │ ╶─┘ ├─╴ └─┐ ╵ │
+│ │ └─╴ └─╴ ╶─┼─┐ ╷ │ ╶─┤
+│ ├───╴ ╶─────┘ │ │ │ ╶─┤
+└─┴─────────────┴─┴─┴───┘
+```

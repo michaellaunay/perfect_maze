@@ -4,15 +4,25 @@ site_url: https://michaellaunay.github.io/perfect_maze/
 repo_url: https://github.com/michaellaunay/perfect_maze
 repo_name: michaellaunay/perfect_maze
 edit_uri: edit/main/docs/
+
 copyright: Copyright &copy; 2015-2026 Michaël Launay — AGPL-3.0-or-later
 
 nav:
   - Home: index.md
-  - Usage: usage.md
-  - Development: development.md
-  - Multi-level mazes (design): multilevel.md
-  - API reference: api.md
-  - Changelog: changelog.md
+  - English:
+      - Overview: en/index.md
+      - Usage: en/usage.md
+      - Development: en/development.md
+      - Multi-level mazes (design): en/multilevel.md
+      - API reference: en/api.md
+      - Changelog: en/changelog.md
+  - Français:
+      - Présentation: fr/index.md
+      - Utilisation: fr/usage.md
+      - Développement: fr/development.md
+      - Labyrinthes multi-niveaux (conception): fr/multilevel.md
+      - Référence de l'API: fr/api.md
+      - Journal des modifications: fr/changelog.md
 
 theme:
   name: material
