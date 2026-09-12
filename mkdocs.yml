@@ -10,6 +10,7 @@ nav:
   - Home: index.md
   - Usage: usage.md
   - Development: development.md
+  - Multi-level mazes (design): multilevel.md
   - API reference: api.md
   - Changelog: changelog.md
 
