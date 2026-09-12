@@ -39,4 +39,21 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[docs]"
-      - run: make -C doc html SPHINXOPTS="-W --keep-going"
+      - run: zensical build --strict
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy-docs:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [lint, test, docs]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

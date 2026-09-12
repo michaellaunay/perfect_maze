@@ -34,3 +34,7 @@ doc/build/
 *~
 .vscode/
 .idea/
+.venv/
+patches/
+*.patch
+

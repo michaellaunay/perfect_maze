@@ -1,22 +1,4 @@
-# perfect_maze
-
-A small, dependency-free Python library and command-line tool that generates
-**perfect mazes** and renders them with UTF-8 box-drawing characters.
-
-A perfect maze has no isolated cell and no loop: every cell can be reached
-from every other one by exactly one path. Structurally it is a spanning tree
-of the grid graph.
-
-```text
-┌─────┬─┬─┬─────┬───┬───┐
-│ ╷ ╶─┘ │ └─┐ ╷ ╵ ╷ ╵ ┌─┤
-│ ├─┬─╴ │ ╶─┘ ├─╴ └─┐ ╵ │
-│ │ └─╴ └─╴ ╶─┼─┐ ╷ │ ╶─┤
-│ ├───╴ ╶─────┘ │ │ │ ╶─┤
-└─┴─────────────┴─┴─┴───┘
-```
-
-Requires Python 3.12 or later.
+# Usage
 
 ## Installation
 
@@ -24,6 +6,8 @@ Requires Python 3.12 or later.
 pip install perfect-maze          # from PyPI, once published
 pip install git+https://github.com/michaellaunay/perfect_maze.git
 ```
+
+Python 3.12 or later is required.
 
 ## Command line
 
@@ -57,21 +41,26 @@ maze = build_maze(60, 40)
 print(printable_maze(maze))  # or simply print(maze)
 ```
 
-Reproducible generation and round-tripping:
+### Reproducible generation
+
+Pass any callable with the signature of `random.randrange`:
 
 ```python
 import random
-from perfect_maze import build_maze, printable_maze
 
 maze = build_maze(10, 8, randrange=random.Random(42).randrange)
+```
 
-# open_walls is the list of passages opened during generation, in order.
-# Feeding it back rebuilds the very same maze without any randomness.
+[`Maze.open_walls`][perfect_maze.maze.Maze] records every passage opened
+during generation, in order. Feeding it back rebuilds the very same maze
+without any randomness:
+
+```python
 again = build_maze(10, 8, open_walls=maze.open_walls)
 assert printable_maze(again) == printable_maze(maze)
 ```
 
-Walking the maze:
+### Walking the maze
 
 ```python
 from perfect_maze import Direction
@@ -82,8 +71,10 @@ for direction, neighbour in cell.neighbours():
         print(f"can go {direction.name} to cell {neighbour.index}")
 ```
 
-Attach your own data to cells by subclassing `Cell` and passing
-`cell_type=`:
+### Custom cells
+
+Subclass [`Cell`][perfect_maze.maze.Cell] and pass it as `cell_type` to
+attach your own data to every cell:
 
 ```python
 from perfect_maze import Cell, build_maze
@@ -100,14 +91,6 @@ class Room(Cell):
 maze = build_maze(5, 5, cell_type=Room)
 ```
 
-### How it works
-
-The grid starts with every wall built. Walls are then picked at random and
-removed whenever they separate two cells that are not yet connected, using a
-union-find structure to track connectivity. The loop stops after
-`width * height - 1` walls have been removed, which is exactly the number of
-edges of a spanning tree.
-
 ## Development
 
 ```shell
@@ -118,15 +101,5 @@ pip install -e ".[dev,docs]"
 
 ruff format . && ruff check .      # formatting and linting
 pytest --cov                       # tests with coverage
-zensical serve                     # documentation with live reload
+mkdocs serve                       # documentation with live reload
 ```
-
-Documentation: <https://michaellaunay.github.io/perfect_maze/>
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md).
-
-## License
-
-GNU Affero General Public License v3.0 or later — see [LICENSE](LICENSE).

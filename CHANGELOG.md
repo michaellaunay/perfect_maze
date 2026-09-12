@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and the project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Documentation moved from Sphinx/reStructuredText to Markdown, built with
+  Zensical and mkdocstrings (`zensical serve`), and published on GitHub Pages.
+
 ## [1.0.0] - 2026-09-12
 
 ### Changed (breaking)
@@ -64,6 +71,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 - Add `open_walls` parameter to `build_maze` to reload a maze.
 - Add argument parsing to use the module as a stand-alone script.
 
+[Unreleased]: https://github.com/michaellaunay/perfect_maze/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/michaellaunay/perfect_maze/compare/v0.1.4...v1.0.0
 [0.1.4]: https://github.com/michaellaunay/perfect_maze/releases/tag/v0.1.4
 [0.1.3]: https://github.com/michaellaunay/perfect_maze/releases/tag/v0.1.3

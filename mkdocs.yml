@@ -1,0 +1,65 @@
+site_name: perfect_maze
+site_description: A perfect maze generator with a UTF-8 box-drawing renderer.
+site_url: https://michaellaunay.github.io/perfect_maze/
+repo_url: https://github.com/michaellaunay/perfect_maze
+repo_name: michaellaunay/perfect_maze
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2015-2026 Michaël Launay — AGPL-3.0-or-later
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - API reference: api.md
+  - Changelog: changelog.md
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            members_order: source
+            separate_signature: true
+            show_signature_annotations: true
+            merge_init_into_class: true
+            show_if_no_docstring: false
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: [.]
+      check_paths: true
+
+validation:
+  links:
+    absolute_links: relative_to_docs
+    unrecognized_links: warn
