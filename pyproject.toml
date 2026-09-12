@@ -76,6 +76,9 @@ target-version = "py312"
 line-length = 88
 src = ["src", "tests"]
 
+[tool.ruff.format]
+exclude = ["tests/fixtures.py"]
+
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
 
