@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perfect-maze"
+dynamic = ["version"]
+description = "A perfect maze generator with a UTF-8 box-drawing renderer."
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "Michaël Launay", email = "michaellaunay@ecreall.com" }]
+requires-python = ">=3.12"
+keywords = ["maze", "labyrinth", "generator", "spanning-tree", "unicode"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment :: Puzzle Games",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.5",
+]
+docs = [
+    "sphinx>=7",
+]
+
+[project.scripts]
+perfect-maze = "perfect_maze.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/michaellaunay/perfect_maze"
+Repository = "https://github.com/michaellaunay/perfect_maze"
+Issues = "https://github.com/michaellaunay/perfect_maze/issues"
+Changelog = "https://github.com/michaellaunay/perfect_maze/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+perfect_maze = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "perfect_maze.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["perfect_maze"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = ['if __name__ == "__main__":']
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/fixtures.py" = ["E501"]
