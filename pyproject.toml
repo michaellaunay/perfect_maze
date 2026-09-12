@@ -57,7 +57,7 @@ where = ["src"]
 perfect_maze = ["py.typed"]
 
 [tool.setuptools.dynamic]
-version = { attr = "perfect_maze.__version__" }
+version = { attr = "perfect_maze._version.__version__" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
