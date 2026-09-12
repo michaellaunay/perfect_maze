@@ -1,16 +1,36 @@
-*.egg-info
-*.pyc
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+
+# Build / distribution
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+Pipfile.lock
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Linters
+.ruff_cache/
+.mypy_cache/
+
+# Documentation
+doc/build/
+
+# Editors
 *.swo
 *.swp
 *~
-.installed.cfg
-.mr.developer.cfg
-__pycache__
-bin/
-cache/
-develop-eggs/
-eggs/
-node_modules/
-parts/
-tmp/
-var/
+.vscode/
+.idea/
