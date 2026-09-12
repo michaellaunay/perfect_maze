@@ -1,5 +1,6 @@
 # perfect_maze
 
+<!-- --8<-- [start:intro] -->
 A small, dependency-free Python library and command-line tool that generates
 **perfect mazes** and renders them with UTF-8 box-drawing characters.
 
@@ -18,6 +19,9 @@ of the grid graph.
 
 Requires Python 3.12 or later.
 
+<!-- --8<-- [end:intro] -->
+
+<!-- --8<-- [start:usage] -->
 ## Installation
 
 ```shell
@@ -100,7 +104,10 @@ class Room(Cell):
 maze = build_maze(5, 5, cell_type=Room)
 ```
 
-### How it works
+<!-- --8<-- [end:usage] -->
+
+<!-- --8<-- [start:algorithm] -->
+## How it works
 
 The grid starts with every wall built. Walls are then picked at random and
 removed whenever they separate two cells that are not yet connected, using a
@@ -108,6 +115,9 @@ union-find structure to track connectivity. The loop stops after
 `width * height - 1` walls have been removed, which is exactly the number of
 edges of a spanning tree.
 
+<!-- --8<-- [end:algorithm] -->
+
+<!-- --8<-- [start:development] -->
 ## Development
 
 ```shell
@@ -122,6 +132,8 @@ zensical serve                     # documentation with live reload
 ```
 
 Documentation: <https://michaellaunay.github.io/perfect_maze/>
+
+<!-- --8<-- [end:development] -->
 
 ## Changelog
 

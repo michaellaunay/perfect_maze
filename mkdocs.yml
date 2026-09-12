@@ -9,6 +9,7 @@ copyright: Copyright &copy; 2015-2026 Michaël Launay — AGPL-3.0-or-later
 nav:
   - Home: index.md
   - Usage: usage.md
+  - Development: development.md
   - API reference: api.md
   - Changelog: changelog.md
 
