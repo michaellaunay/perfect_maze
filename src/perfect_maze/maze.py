@@ -14,7 +14,6 @@ number of edges of a spanning tree.
 
 from __future__ import annotations
 
-import itertools
 import random
 from collections.abc import Callable, Iterator, Sequence
 from enum import IntEnum
@@ -24,6 +23,7 @@ __all__ = [
     "Cell",
     "Direction",
     "Maze",
+    "MazeFormatError",
     "OpenWall",
     "RandRange",
     "Wall",
@@ -36,6 +36,10 @@ type RandRange = Callable[[int, int], int]
 type OpenWall = tuple[int, int, int]
 """An opened wall: ``(x, y, direction)`` where ``direction`` is a
 :class:`Direction` value."""
+
+
+class MazeFormatError(ValueError):
+    """Stored passages do not describe a valid perfect maze."""
 
 
 class Direction(IntEnum):
@@ -312,6 +316,68 @@ def _grid[C: Cell](width: int, height: int, cell_type: type[C]) -> list[list[C]]
     return cells
 
 
+def _validate_open_walls(
+    width: int, height: int, open_walls: Sequence[OpenWall]
+) -> tuple[OpenWall, ...]:
+    """Validate and copy a complete spanning tree before constructing cells."""
+    if isinstance(open_walls, (str, bytes, bytearray, memoryview)) or not isinstance(
+        open_walls, Sequence
+    ):
+        raise MazeFormatError("open_walls must be a sequence of triplets")
+
+    size = width * height
+    target = size - 1
+    if len(open_walls) != target:
+        raise MazeFormatError(
+            f"open_walls must contain exactly {target} passages for "
+            f"{width}x{height}, got {len(open_walls)}"
+        )
+
+    groups = _UnionFind(size)
+    seen: set[tuple[int, int]] = set()
+    validated: list[OpenWall] = []
+    for index, record in enumerate(open_walls):
+        prefix = f"open_walls[{index}]"
+        if (
+            isinstance(record, (str, bytes, bytearray, memoryview))
+            or not isinstance(record, Sequence)
+            or len(record) != 3
+        ):
+            raise MazeFormatError(f"{prefix} must be an (x, y, direction) triplet")
+        if any(
+            isinstance(value, bool) or not isinstance(value, int) for value in record
+        ):
+            raise MazeFormatError(f"{prefix} must contain integers, not booleans")
+
+        x, y, value = record
+        if not (0 <= x < width and 0 <= y < height):
+            raise MazeFormatError(
+                f"{prefix} coordinates ({x}, {y}) are outside {width}x{height}"
+            )
+        try:
+            direction = Direction(value)
+        except ValueError:
+            raise MazeFormatError(f"{prefix} has invalid direction {value}") from None
+
+        dx, dy = ((0, -1), (1, 0), (0, 1), (-1, 0))[direction]
+        nx, ny = x + dx, y + dy
+        if not (0 <= nx < width and 0 <= ny < height):
+            raise MazeFormatError(f"{prefix} opens an outer wall")
+
+        first = y * width + x
+        second = ny * width + nx
+        edge = (min(first, second), max(first, second))
+        if edge in seen:
+            raise MazeFormatError(f"{prefix} is a duplicate passage")
+        if not groups.union(first, second):
+            raise MazeFormatError(f"{prefix} creates a cycle")
+        seen.add(edge)
+        validated.append((int(x), int(y), direction))
+
+    # N-1 distinct, acyclic edges on N vertices necessarily form a connected tree.
+    return tuple(validated)
+
+
 def build_maze(
     width: int,
     height: int,
@@ -332,7 +398,12 @@ def build_maze(
         open_walls: If given, the maze is rebuilt deterministically from
             this sequence of ``(x, y, direction)`` triplets, typically the
             :attr:`Maze.open_walls` of a previously generated maze.
-            ``randrange`` is then ignored.
+            Exactly ``width * height - 1`` distinct internal passages must
+            form a spanning tree. Coordinates and directions must be integers
+            (not booleans), coordinates must be in bounds, and directions
+            must be :class:`Direction` values or their integer equivalents.
+            No records are skipped; order and orientation are preserved.
+            ``randrange`` is then ignored, even for invalid input.
         cell_type: Class used to instantiate cells. Subclass :class:`Cell`
             to attach your own data to the maze.
 
@@ -341,17 +412,18 @@ def build_maze(
 
     Raises:
         ValueError: If ``width`` or ``height`` is lower than 1.
+        MazeFormatError: If ``open_walls`` is malformed or does not describe
+            a perfect maze. Validation completes before any cells are created.
     """
     if width < 1 or height < 1:
         raise ValueError(f"width and height must be >= 1, got {width}x{height}")
 
     if open_walls is not None:
-        # Each stored triplet is exactly one accepted (x, y, direction) draw,
-        # so replaying them through randrange rebuilds the same maze.
-        replay = itertools.chain.from_iterable(open_walls)
-
-        def randrange(_start: int, _stop: int) -> int:
-            return next(replay)
+        passages = _validate_open_walls(width, height, open_walls)
+        cells = _grid(width, height, cell_type)
+        for x, y, direction in passages:
+            cells[y][x].wall(Direction(direction)).is_built = False
+        return Maze(cells, width, height, passages)
 
     cells = _grid(width, height, cell_type)
     groups = _UnionFind(width * height)

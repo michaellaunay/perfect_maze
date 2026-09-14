@@ -11,6 +11,14 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 - Documentation moved from Sphinx/reStructuredText to Markdown, built with
   Zensical and mkdocstrings (`zensical serve`), and published on GitHub Pages.
 
+### Fixed
+
+- Replay validates complete passage records before constructing any cells.
+  Invalid coordinates, directions, outer walls, duplicates, cycles and
+  incorrect passage counts now raise `MazeFormatError` (a `ValueError`)
+  instead of being ignored or leaking iterator/index errors. Valid replay
+  preserves passage order and never calls the random source.
+
 ## [1.0.0] - 2026-09-12
 
 ### Changed (breaking)

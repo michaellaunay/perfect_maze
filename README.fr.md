@@ -78,6 +78,19 @@ again = build_maze(10, 8, open_walls=maze.open_walls)
 assert printable_maze(again) == printable_maze(maze)
 ```
 
+`open_walls` est validé avant de construire les cellules. Fournissez une
+séquence d'exactement `width * height - 1` triplets (tuples ou listes)
+décrivant un labyrinthe connexe sans cycle. Coordonnées et directions doivent
+être des entiers, pas des booléens ; les coordonnées doivent être dans la
+grille et les directions dans `0..3` (ou des membres de `Direction`). Les
+murs extérieurs, doublons (y compris depuis la cellule opposée), triplets
+malformés et enregistrements en trop ou manquants sont refusés par
+`MazeFormatError`, importable depuis `perfect_maze` et dérivée de
+`ValueError`. Une séquence vide n'est valide que pour un labyrinthe `1x1` ;
+`None` demande toujours une génération aléatoire. Le rejeu valide conserve
+l'ordre des passages et n'appelle jamais `randrange`. L'algorithme de
+génération aléatoire et le format des fixtures restent inchangés.
+
 Parcourir le labyrinthe :
 
 ```python

@@ -77,6 +77,18 @@ again = build_maze(10, 8, open_walls=maze.open_walls)
 assert printable_maze(again) == printable_maze(maze)
 ```
 
+`open_walls` is validated before any cells are constructed. Pass a sequence
+of exactly `width * height - 1` triplets (tuples or lists), describing a
+connected maze without cycles. Coordinates and directions must be integers,
+not booleans; coordinates must be in bounds and directions in `0..3` (or
+`Direction` members). Outer walls, duplicate passages (including from the
+opposite side), malformed records and extra or missing records are rejected
+with `MazeFormatError`, importable from `perfect_maze` and derived from
+`ValueError`. An empty sequence is valid only for a `1x1` maze; `None` still
+requests random generation. Valid replay preserves record order and never
+calls `randrange`. The random-generation algorithm and fixture format are
+unchanged.
+
 Walking the maze:
 
 ```python
