@@ -118,6 +118,19 @@ class Room(Cell):
 maze = build_maze(5, 5, cell_type=Room)
 ```
 
+### Neighbour assignments
+
+The low-level `north_cell`, `east_cell`, `south_cell` and `west_cell` setters
+maintain reciprocal links and one shared wall. Replacing a neighbour
+clears the old partners at both ends; assigning `None` disconnects both
+sides. Detached sides receive built outer walls, and a new connection starts
+with a built shared wall. Reassigning the current neighbour (or `None` to an
+existing boundary) preserves the wall object and its open/closed state.
+Linking a cell to itself raises `ValueError`; other invalid targets raise
+`TypeError`, without changing the graph. These operations do not update
+`Maze.cells` or the generation history `Maze.open_walls`, and do not
+preserve a rectangular layout or guarantee a perfect maze after edits.
+
 <!-- --8<-- [end:usage] -->
 
 <!-- --8<-- [start:algorithm] -->

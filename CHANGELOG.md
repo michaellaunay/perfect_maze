@@ -18,6 +18,11 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
   incorrect passage counts now raise `MazeFormatError` (a `ValueError`)
   instead of being ignored or leaking iterator/index errors. Valid replay
   preserves passage order and never calls the random source.
+- Neighbour replacement and removal now detach reciprocal links at both
+  ends, restore built outer walls for displaced cells and keep a single
+  shared wall for the new connection. Reassigning the same neighbour or
+  boundary preserves wall identity and state. Self-links and non-cell
+  targets are rejected before mutating the graph.
 
 ## [1.0.0] - 2026-09-12
 

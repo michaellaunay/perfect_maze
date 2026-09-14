@@ -102,8 +102,13 @@ class Cell:
 
     Neighbours are assigned through the ``*_cell`` properties. Setting a
     neighbour creates the shared :class:`Wall` and links the neighbour back,
-    so the graph stays consistent. Setting a neighbour to ``None`` creates an
-    outer wall.
+    so the graph stays consistent. Replacing a neighbour detaches the old
+    partners at both ends and gives each detached side a built outer wall.
+    Setting a neighbour to ``None`` disconnects both sides. New connections
+    start with a built wall; assigning the current neighbour again is a no-op
+    that preserves wall identity and state (including existing outer walls).
+    Self-links raise :class:`ValueError`; non-cell, non-``None`` targets raise
+    :class:`TypeError`. Neither error changes the graph.
 
     Args:
         index: Position of the cell in row-major order. Used as the
@@ -174,20 +179,45 @@ class Cell:
     # -- neighbour properties -----------------------------------------------
 
     def _link(self, direction: Direction, other: Self | None) -> None:
-        """Link ``other`` as the neighbour in ``direction`` (or an outer wall)."""
+        """Replace one link, detaching the previous partners at both ends.
+
+        New connections and detached boundaries start with built walls.
+        Assigning the current neighbour again preserves the existing wall.
+        Invalid targets are rejected before any graph state changes.
+        """
+        if other is not None and not isinstance(other, Cell):
+            raise TypeError("neighbour must be a Cell or None")
+        if other is self:
+            raise ValueError("a cell cannot be linked to itself")
+
+        opposite = direction.opposite
         attr_cell = f"_{direction.name.lower()}_cell"
         attr_wall = f"{direction.name.lower()}_wall"
-        setattr(self, attr_cell, other)
-        if other is None:
-            setattr(self, attr_wall, Wall(self, None))
+        back_cell = f"_{opposite.name.lower()}_cell"
+        back_wall = f"{opposite.name.lower()}_wall"
+        previous = self.neighbour(direction)
+        if previous is other and getattr(self, attr_wall) is not None:
             return
-        # Stop the recursion once the back-link already points to us.
-        if other.neighbour(direction.opposite) is not self:
-            wall = Wall(self, other)
-            setattr(self, attr_wall, wall)
-            setattr(other, f"{direction.opposite.name.lower()}_wall", wall)
-            # Set the back-link after the wall so the data stays consistent.
-            other._link(direction.opposite, self)
+
+        displaced = other.neighbour(opposite) if other is not None else None
+        # Allocate replacement walls before changing any endpoint. Avoid the
+        # public setters here: recursively linking back can leave stale links.
+        wall = Wall(self, other)
+        previous_boundary = Wall(previous, None) if previous is not None else None
+        displaced_boundary = Wall(displaced, None) if displaced is not None else None
+
+        if previous is not None:
+            setattr(previous, back_cell, None)
+            setattr(previous, back_wall, previous_boundary)
+        if displaced is not None:
+            setattr(displaced, attr_cell, None)
+            setattr(displaced, attr_wall, displaced_boundary)
+
+        setattr(self, attr_cell, other)
+        setattr(self, attr_wall, wall)
+        if other is not None:
+            setattr(other, back_cell, self)
+            setattr(other, back_wall, wall)
 
     @property
     def north_cell(self) -> Cell | None:

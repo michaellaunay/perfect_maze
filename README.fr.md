@@ -120,6 +120,21 @@ class Room(Cell):
 maze = build_maze(5, 5, cell_type=Room)
 ```
 
+### Affectation des voisins
+
+Les accesseurs de bas niveau `north_cell`, `east_cell`, `south_cell` et
+`west_cell` maintiennent les liens réciproques et un mur partagé unique.
+Remplacer un voisin détache les anciens partenaires aux deux extrémités ;
+affecter `None` déconnecte les deux côtés. Les côtés détachés reçoivent des
+murs extérieurs fermés, et une nouvelle liaison commence avec un mur partagé
+fermé. Réaffecter le voisin actuel (ou `None` à une bordure existante)
+conserve l'objet mur et son état ouvert ou fermé. Relier une cellule à
+elle-même lève `ValueError` ; toute autre cible invalide lève `TypeError`,
+sans modifier le graphe. Ces opérations ne mettent à jour ni `Maze.cells`
+ni l'historique de génération `Maze.open_walls` ; elles ne préservent pas
+la disposition rectangulaire et ne garantissent pas un labyrinthe parfait
+après modification.
+
 <!-- --8<-- [end:usage] -->
 
 <!-- --8<-- [start:algorithm] -->
