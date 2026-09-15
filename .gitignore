@@ -39,3 +39,4 @@ site/
 patches/
 *.patch
 
+*.mbox
